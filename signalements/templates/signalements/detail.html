@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ signalement.titre }}</h2>
+
+<hr>
+
+<p>
+
+<b>Catégorie :</b>
+
+{{ signalement.categorie }}
+
+</p>
+
+<p>
+
+<b>Description :</b>
+
+{{ signalement.description }}
+
+</p>
+
+<p>
+
+<b>Statut :</b>
+
+{{ signalement.get_statut_display }}
+
+</p>
+
+<p>
+
+<b>Lieu :</b>
+
+{{ signalement.lieu }}
+
+</p>
+
+<p>
+
+<b>Latitude :</b>
+
+{{ signalement.latitude }}
+
+</p>
+
+<p>
+
+<b>Longitude :</b>
+
+{{ signalement.longitude }}
+
+</p>
+
+<a href="{% url 'liste_signalements' %}"
+
+class="btn btn-secondary">
+
+Retour
+
+</a>
+
+{% endblock %}

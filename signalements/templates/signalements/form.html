@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<h2>{{ titre }}</h2>
+
+<hr>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button class="btn btn-success">
+
+Enregistrer
+
+</button>
+
+<a href="/carte/" class="btn btn-primary">
+
+Choisir sur la carte
+
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}

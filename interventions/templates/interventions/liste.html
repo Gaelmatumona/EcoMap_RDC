@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Liste des affectations</h2>
+
+</div>
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-success">
+
+        <tr>
+
+            <th>ID</th>
+            <th>Signalement</th>
+            <th>Service</th>
+            <th>Responsable</th>
+            <th>Statut</th>
+            <th>Date</th>
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for affectation in affectations %}
+
+        <tr>
+
+            <td>{{ affectation.id }}</td>
+
+            <td>{{ affectation.signalement.titre }}</td>
+
+            <td>{{ affectation.service.nom }}</td>
+
+            <td>{{ affectation.responsable }}</td>
+
+            <td>
+
+                <span class="badge bg-primary">
+
+                    {{ affectation.get_statut_display }}
+
+                </span>
+
+            </td>
+
+            <td>{{ affectation.date_affectation }}</td>
+
+            <td>
+
+                <a href="{% url 'detail_affectation' affectation.id %}"
+                   class="btn btn-success btn-sm">
+
+                    Voir
+
+                </a>
+
+            </td>
+
+        </tr>
+
+    {% empty %}
+
+        <tr>
+
+            <td colspan="7">
+
+                Aucune affectation.
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

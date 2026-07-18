@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2>Liste des signalements</h2>
+
+<div>
+
+<a
+href="{% url 'ajouter_signalement' %}"
+class="btn btn-success">
+
+Nouveau signalement
+
+</a>
+
+<a
+href="{% url 'export_pdf' %}"
+class="btn btn-danger">
+
+Télécharger PDF
+
+</a>
+
+</div>
+
+</div>
+
+<form method="get" class="row g-3 mb-4">
+
+<div class="col-md-4">
+
+<input
+type="text"
+name="q"
+class="form-control"
+placeholder="Rechercher un titre..."
+value="{{ request.GET.q }}">
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="categorie"
+class="form-select">
+
+<option value="">
+
+Toutes les catégories
+
+</option>
+
+{% for categorie in categories %}
+
+<option
+value="{{ categorie.id }}"
+{% if request.GET.categorie == categorie.id|stringformat:"s" %}
+selected
+{% endif %}
+>
+
+{{ categorie.nom }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="statut"
+class="form-select">
+
+<option value="">
+
+Tous les statuts
+
+</option>
+
+{% for code, libelle in statut_choices %}
+
+<option
+value="{{ code }}"
+{% if request.GET.statut == code %}
+selected
+{% endif %}
+>
+
+{{ libelle }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="submit"
+class="btn btn-primary w-100">
+
+Filtrer
+
+</button>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover align-middle">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Titre</th>
+
+<th>Catégorie</th>
+
+<th>Statut</th>
+
+<th>Date</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for signalement in signalements %}
+
+<tr>
+
+<td>
+
+{{ signalement.titre }}
+
+</td>
+
+<td>
+
+{{ signalement.categorie.nom }}
+
+</td>
+
+<td>
+
+{% if signalement.statut == "EN_ATTENTE" %}
+
+<span class="badge bg-warning text-dark">
+
+{{ signalement.get_statut_display }}
+
+</span>
+
+{% elif signalement.statut == "EN_COURS" %}
+
+<span class="badge bg-primary">
+
+{{ signalement.get_statut_display }}
+
+</span>
+
+{% elif signalement.statut == "RESOLU" %}
+
+<span class="badge bg-success">
+
+{{ signalement.get_statut_display }}
+
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+
+{{ signalement.get_statut_display }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{{ signalement.date_signalement|date:"d/m/Y H:i" }}
+
+</td>
+
+<td>
+
+<a
+href="{% url 'detail_signalement' signalement.id %}"
+class="btn btn-primary btn-sm">
+
+Voir
+
+</a>
+
+{% if not signalement.affectation %}
+
+<a
+href="{% url 'creer_affectation' signalement.id %}"
+class="btn btn-warning btn-sm">
+
+Affecter
+
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+Aucun signalement trouvé.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

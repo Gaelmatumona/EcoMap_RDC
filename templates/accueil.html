@@ -1,0 +1,564 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Bannière -->
+
+<section
+style="
+background:
+linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+url('{% static "images/accueil/dechets1.jpg" %}');
+background-size:cover;
+background-position:center;
+min-height:650px;
+display:flex;
+width: 100%;
+margin: 0;
+align-items:center;
+">
+
+<div class="w-full text-center text-white px-0">
+
+<h1 class="display-3 fw-bold">
+
+EcoMap RDC
+
+</h1>
+
+<p class="lead mt-4">
+
+Une plateforme intelligente de gestion environnementale permettant aux citoyens
+de signaler les dépôts sauvages d'ordures, les caniveaux bouchés,
+les poubelles débordantes et tout autre problème environnemental
+en République Démocratique du Congo.
+
+</p>
+
+<p class="fs-5">
+
+Ensemble, protégeons notre environnement pour une ville plus propre,
+plus saine et plus durable.
+
+</p>
+
+<div class="mt-5">
+
+<a href="{% url 'carte' %}"
+
+class="btn btn-success btn-lg me-3">
+
+🗺 Explorer la carte
+
+</a>
+
+<a href="{% url 'ajouter_signalement' %}"
+
+class="btn btn-warning btn-lg">
+
+🚮 Faire un signalement
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+<section class="py-5">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-6">
+
+<h2 class="text-success fw-bold">
+
+Notre Vision
+
+</h2>
+
+<p class="mt-4">
+
+EcoMap RDC ambitionne de devenir une référence nationale dans la gestion
+participative des problèmes environnementaux grâce aux technologies numériques.
+La plateforme favorise la collaboration entre les citoyens, les autorités
+et les services d'assainissement afin d'améliorer durablement le cadre de vie.
+
+</p>
+
+</div>
+
+<div class="col-lg-6">
+
+<h2 class="text-success fw-bold">
+
+Notre Engagement
+
+</h2>
+
+<p class="mt-4">
+
+Nous croyons qu'un simple signalement peut déclencher une action concrète.
+Chaque citoyen devient un acteur du changement en contribuant à une
+République Démocratique du Congo plus propre, plus saine et plus respectueuse
+de son environnement.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Présentation -->
+
+<section class="container py-5">
+
+    <div class="text-center">
+
+        <h2 class="fw-bold text-success">
+
+            Pourquoi EcoMap RDC ?
+
+        </h2>
+
+        <p class="lead mt-3">
+
+            Les déchets abandonnés dans les rues, les marchés et les caniveaux
+            représentent aujourd'hui un défi majeur pour plusieurs villes de la
+            République Démocratique du Congo.
+
+        </p>
+
+        <p>
+
+            EcoMap RDC facilite la participation citoyenne grâce à la
+            géolocalisation, au suivi des signalements et à la coordination des
+            interventions des services compétents.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Navigation rapide -->
+
+<div class="container">
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>📍</h1>
+
+                    <h5>Territoire</h5>
+
+                    <p>
+
+                        Gérer les provinces, villes,
+                        communes, quartiers,
+                        avenues et lieux.
+
+                    </p>
+
+                    <a href="/territoire/" class="btn btn-success">
+
+                        Voir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>⚠️</h1>
+
+                    <h5>Signalements</h5>
+
+                    <p>
+
+                        Déclarer et consulter
+                        les problèmes
+                        environnementaux.
+
+                    </p>
+
+                    <a href="/signalements/" class="btn btn-success">
+
+                        Voir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>🚛</h1>
+
+                    <h5>Interventions</h5>
+
+                    <p>
+
+                        Suivre les opérations
+                        réalisées par les
+                        services concernés.
+
+                    </p>
+
+                    <a href="/interventions/" class="btn btn-success">
+
+                        Voir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% if user.is_staff %}
+
+<div class="col-md-3">
+
+
+{% endif %}
+
+    </div>
+
+</div>
+<!-- Les défis de la salubrité -->
+
+<section class="container py-5">
+
+    <h2 class="text-center text-success fw-bold mb-5">
+
+        Les défis de la salubrité en RDC
+
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <img src="{% static 'images/accueil/dechets1.jpg' %}" class="card-img-top" style="height:250px; object-fit:cover;">
+
+                <div class="card-body">
+
+                    <h5>Dépôts sauvages de déchets</h5>
+
+                    <p>
+
+                        Les dépôts anarchiques d'ordures dégradent les quartiers,
+                        favorisent les maladies et détériorent l'environnement.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <img src="{% static 'images/accueil/dechets2.jpg' %}" class="card-img-top" style="height:250px; object-fit:cover;">
+
+                <div class="card-body">
+
+                    <h5>Déchets ménagers</h5>
+
+                    <p>
+
+                        Les déchets non collectés attirent les insectes,
+                        les rongeurs et produisent de mauvaises odeurs.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <img src="{% static 'images/accueil/dechets3.jpg' %}" class="card-img-top"
+                 style="height:250px; object-fit:cover;">
+
+                <div class="card-body">
+
+                    <h5>Pollution des quartiers</h5>
+
+                    <p>
+
+                        Les déchets abandonnés mettent en danger la santé
+                        des habitants et dégradent le cadre de vie.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow h-100">
+
+                <img src="{% static 'images/accueil/dechets4.jpg' %}" class="card-img-top">
+
+                <div class="card-body">
+
+                    <h5>Caniveaux obstrués</h5>
+
+                    <p>
+
+                        Les caniveaux remplis d'ordures provoquent des
+                        inondations pendant les fortes pluies.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow h-100">
+
+                <img src="{% static 'images/accueil/dechets5.jpg' %}" class="card-img-top">
+
+                <div class="card-body">
+
+                    <h5>Pollution plastique</h5>
+
+                    <p>
+
+                        Les déchets plastiques restent dans la nature
+                        pendant plusieurs centaines d'années et menacent
+                        les écosystèmes.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="text-center mt-5">
+
+    <h3 class="text-success">
+
+        Vous êtes témoin d'un dépôt sauvage de déchets ?
+
+    </h3>
+
+    <p>
+
+        Connectez-vous pour envoyer un signalement et contribuer à
+        l'amélioration de votre environnement.
+
+    </p>
+
+    <a href="{% url 'ajouter_signalement' %}"
+       class="btn btn-danger btn-lg">
+
+        🚮 Signaler maintenant
+
+    </a>
+
+</div>
+
+<!-- Comment fonctionne EcoMap RDC -->
+
+<section class="bg-light py-5">
+
+    <div class="container">
+
+        <h2 class="text-center text-success fw-bold mb-5">
+
+            Comment fonctionne EcoMap RDC ?
+
+        </h2>
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+
+                <h1>📍</h1>
+
+                <h5>1. Localiser</h5>
+
+                <p>
+
+                    Choisissez l'endroit exact sur la carte.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h1>📷</h1>
+
+                <h5>2. Signaler</h5>
+
+                <p>
+
+                    Décrivez le problème et ajoutez des photos.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h1>🚛</h1>
+
+                <h5>3. Intervention</h5>
+
+                <p>
+
+                    Les services compétents prennent en charge le signalement.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h1>✅</h1>
+
+                <h5>4. Résolution</h5>
+
+                <p>
+
+                    Le problème est résolu et le suivi est mis à jour.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Notre mission -->
+
+<section class="container py-5">
+
+    <div class="text-center">
+
+        <h2 class="text-success fw-bold">
+
+            Notre mission
+
+        </h2>
+
+        <p class="lead mt-4">
+
+            Promouvoir un environnement propre grâce aux technologies
+            numériques, encourager la participation citoyenne et faciliter
+            les interventions rapides des services d'assainissement.
+
+        </p>
+
+    </div>
+
+</section>
+<section class="container py-5">
+
+<div class="alert alert-success text-center">
+
+<h3>
+
+🌍 « La protection de l'environnement est une responsabilité partagée. »
+
+</h3>
+
+<p class="mb-0">
+
+Chaque signalement effectué sur EcoMap RDC contribue à préserver
+notre cadre de vie et celui des générations futures.
+
+</p>
+
+</div>
+
+</section>
+
+<!-- Appel à l'action -->
+
+<section class="bg-success text-white py-5">
+
+    <div class="container text-center">
+
+        <h2>
+
+            Ensemble, construisons une RDC plus propre.
+
+        </h2>
+
+        <p class="lead">
+
+            Chaque signalement contribue à améliorer notre cadre de vie.
+
+        </p>
+
+        <a href="{% url 'ajouter_signalement' %}"
+
+           class="btn btn-warning btn-lg">
+
+            🚮 Faire un signalement
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

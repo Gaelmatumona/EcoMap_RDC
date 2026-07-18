@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<h2>Rapports d'intervention</h2>
+
+<a
+href="{% url 'liste_affectations' %}"
+class="btn btn-secondary">
+
+Retour aux affectations
+
+</a>
+
+</div>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+{% if rapports %}
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>#</th>
+
+<th>Signalement</th>
+
+<th>Service</th>
+
+<th>Date</th>
+
+<th>Voir</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for rapport in rapports %}
+
+<tr>
+
+<td>
+
+{{ forloop.counter }}
+
+</td>
+
+<td>
+
+{{ rapport.affectation.signalement.titre }}
+
+</td>
+
+<td>
+
+{{ rapport.affectation.service.nom }}
+
+</td>
+
+<td>
+
+{{ rapport.date_creation|date:"d/m/Y H:i" }}
+
+</td>
+
+<td>
+
+<a
+href="{% url 'detail_affectation' rapport.affectation.id %}"
+class="btn btn-primary btn-sm">
+
+Ouvrir
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+
+Aucun rapport d'intervention n'est disponible.
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profil</title>
+</head>
+<body>
+
+<h2>Bienvenue {{ request.user.nom }}</h2>
+
+<p>Nom d'utilisateur : {{ request.user.username }}</p>
+
+<p>Téléphone : {{ request.user.telephone }}</p>
+
+<p>Email : {{ request.user.email }}</p>
+
+<p>Rôle : {{ request.user.role }}</p>
+
+<a href="{% url 'logout' %}">
+    Déconnexion
+</a>
+
+</body>
+</html>

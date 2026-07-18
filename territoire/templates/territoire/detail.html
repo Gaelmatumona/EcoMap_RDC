@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Détail du lieu</h2>
+
+    <hr>
+
+    <table class="table table-bordered">
+
+        <tr>
+
+            <th>Nom</th>
+
+            <td>{{ lieu.nom }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Type</th>
+
+            <td>{{ lieu.get_type_lieu_display }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Description</th>
+
+            <td>{{ lieu.description }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Avenue</th>
+
+            <td>{{ lieu.avenue }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Latitude</th>
+
+            <td>{{ lieu.latitude }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Longitude</th>
+
+            <td>{{ lieu.longitude }}</td>
+
+        </tr>
+
+    </table>
+
+    <a href="{% url 'liste_lieux' %}" class="btn btn-secondary">
+
+        Retour
+
+    </a>
+
+</div>
+
+{% endblock %}

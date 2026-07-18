@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>Rapport d'intervention</h3>
+
+</div>
+
+<div class="card-body">
+
+<h5>
+
+Signalement :
+
+<strong>{{ affectation.signalement.titre }}</strong>
+
+</h5>
+
+<hr>
+
+<form
+method="post"
+enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Description
+
+</label>
+
+{{ form.description }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Photo avant
+
+</label>
+
+{{ form.photo_avant }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Photo après
+
+</label>
+
+{{ form.photo_apres }}
+
+</div>
+
+<button
+type="submit"
+class="btn btn-success">
+
+Enregistrer le rapport
+
+</button>
+
+<a
+href="{% url 'detail_affectation' affectation.id %}"
+class="btn btn-secondary">
+
+Annuler
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

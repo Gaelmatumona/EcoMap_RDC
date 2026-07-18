@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h2>Détail de l'intervention</h2>
+
+</div>
+
+<div class="card-body">
+
+<h3>{{ affectation.signalement.titre }}</h3>
+
+<hr>
+
+<p>
+
+<strong>Catégorie :</strong>
+
+{{ affectation.signalement.categorie.nom }}
+
+</p>
+
+<p>
+
+<strong>Description :</strong>
+
+{{ affectation.signalement.description }}
+
+</p>
+
+<p>
+
+<strong>Service :</strong>
+
+{{ affectation.service.nom }}
+
+</p>
+
+<p>
+
+<strong>Responsable :</strong>
+
+{{ affectation.responsable }}
+
+</p>
+
+<p>
+
+<strong>Statut :</strong>
+
+{{ affectation.get_statut_display }}
+
+</p>
+
+<p>
+
+<strong>Date d'affectation :</strong>
+
+{{ affectation.date_affectation }}
+
+</p>
+
+<p>
+
+<strong>Date de début :</strong>
+
+{{ affectation.date_debut|default:"Non démarrée" }}
+
+</p>
+
+<p>
+
+<strong>Date de fin :</strong>
+
+{{ affectation.date_fin|default:"Non terminée" }}
+
+</p>
+
+<p>
+
+<strong>Commentaire :</strong>
+
+{{ affectation.commentaire|default:"Aucun commentaire" }}
+
+</p>
+
+<hr>
+
+{% if affectation.statut == "EN_ATTENTE" %}
+
+<a
+href="{% url 'demarrer_affectation' affectation.id %}"
+class="btn btn-primary">
+
+▶ Démarrer
+
+</a>
+
+{% elif affectation.statut == "EN_COURS" %}
+
+<a
+href="{% url 'terminer_affectation' affectation.id %}"
+class="btn btn-success">
+
+✔ Terminer
+
+</a>
+
+{% endif %}
+
+{% if not affectation.rapport %}
+
+<a
+href="{% url 'creer_rapport' affectation.id %}"
+class="btn btn-warning">
+
+📄 Ajouter un rapport
+
+</a>
+
+{% endif %}
+
+<a
+href="{% url 'liste_affectations' %}"
+class="btn btn-secondary">
+
+Retour
+
+</a>
+
+</div>
+
+</div>
+
+{% if affectation.rapport %}
+
+<div class="card shadow mt-4">
+
+<div class="card-header bg-success text-white">
+
+<h3>Rapport d'intervention</h3>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+<strong>Description :</strong>
+
+</p>
+
+<p>
+
+{{ affectation.rapport.description }}
+
+</p>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<h5>Photo avant</h5>
+
+<img
+src="{{ affectation.rapport.photo_avant.url }}"
+class="img-fluid rounded border">
+
+</div>
+
+<div class="col-md-6">
+
+<h5>Photo après</h5>
+
+<img
+src="{{ affectation.rapport.photo_apres.url }}"
+class="img-fluid rounded border">
+
+</div>
+
+</div>
+
+<p class="mt-3">
+
+<strong>Date du rapport :</strong>
+
+{{ affectation.rapport.date_creation }}
+
+</p>
+
+</div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

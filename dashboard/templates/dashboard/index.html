@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">
+
+Tableau de bord EcoMap RDC
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="card text-white bg-primary mb-3">
+<div class="card-body">
+<h5>Total signalements</h5>
+<h2>{{ total_signalements }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white bg-warning mb-3">
+<div class="card-body">
+<h5>En attente</h5>
+<h2>{{ en_attente }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white bg-info mb-3">
+<div class="card-body">
+<h5>En cours</h5>
+<h2>{{ en_cours }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white bg-success mb-3">
+<div class="card-body">
+<h5>Résolus</h5>
+<h2>{{ resolus }}</h2>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-header">
+
+Répartition des statuts
+
+</div>
+
+<div class="card-body">
+
+<canvas id="statutChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-header">
+
+Signalements par catégorie
+
+</div>
+
+<div class="card-body">
+
+<canvas id="categorieChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-header">
+
+Derniers signalements
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-hover">
+
+<thead>
+
+<tr>
+
+<th>Titre</th>
+<th>Catégorie</th>
+<th>Utilisateur</th>
+<th>Statut</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for signalement in derniers_signalements %}
+
+<tr>
+
+<td>{{ signalement.titre }}</td>
+
+<td>{{ signalement.categorie.nom }}</td>
+
+<td>{{ signalement.utilisateur }}</td>
+
+<td>
+
+<span class="badge
+{% if signalement.statut == 'EN_ATTENTE' %}
+bg-warning
+{% elif signalement.statut == 'EN_COURS' %}
+bg-primary
+{% elif signalement.statut == 'RESOLU' %}
+bg-success
+{% else %}
+bg-danger
+{% endif %}
+">
+
+{{ signalement.get_statut_display }}
+
+</span>
+
+</td>
+
+<td>
+
+{{ signalement.date_signalement|date:"d/m/Y H:i" }}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5">
+
+Aucun signalement.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+new Chart(
+
+document.getElementById("statutChart"),
+
+{
+
+type:"pie",
+
+data:{
+
+labels:[
+
+"En attente",
+
+"En cours",
+
+"Résolus",
+
+"Rejetés"
+
+],
+
+datasets:[{
+
+data:[
+
+{{ en_attente }},
+
+{{ en_cours }},
+
+{{ resolus }},
+
+{{ rejetes }}
+
+]
+
+}]
+
+}
+
+}
+
+);
+
+new Chart(
+
+document.getElementById("categorieChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+{% for categorie in categories %}
+
+"{{ categorie.nom }}",
+
+{% endfor %}
+
+],
+
+datasets:[{
+
+label:"Signalements",
+
+data:[
+
+{% for categorie in categories %}
+
+{{ categorie.total }},
+
+{% endfor %}
+
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+}
+
+}
+
+}
+
+);
+
+</script>
+
+{% endblock %}

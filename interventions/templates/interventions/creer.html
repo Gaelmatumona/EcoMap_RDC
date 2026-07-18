@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Nouvelle affectation</h3>
+
+</div>
+
+<div class="card-body">
+
+<h5>
+
+Signalement :
+
+<strong>{{ signalement.titre }}</strong>
+
+</h5>
+
+<hr>
+
+<form method="post">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Service
+
+</label>
+
+{{ form.service }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Responsable
+
+</label>
+
+{{ form.responsable }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Date de début
+
+</label>
+
+{{ form.date_debut }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Date de fin
+
+</label>
+
+{{ form.date_fin }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Statut
+
+</label>
+
+{{ form.statut }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Commentaire
+
+</label>
+
+{{ form.commentaire }}
+
+</div>
+
+<button
+type="submit"
+class="btn btn-success">
+
+Enregistrer
+
+</button>
+
+<a
+href="{% url 'liste_affectations' %}"
+class="btn btn-secondary">
+
+Annuler
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
