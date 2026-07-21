@@ -14,13 +14,40 @@ class SignalementForm(forms.ModelForm):
             "description",
             "latitude",
             "longitude",
-            "statut",
         ]
 
         widgets = {
+            "titre": forms.TextInput(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+            "categorie": forms.Select(
+                attrs={
+                    "class": "form-select"
+                }
+            ),
+            "lieu": forms.Select(
+                attrs={
+                    "class": "form-select"
+                }
+            ),
             "description": forms.Textarea(
                 attrs={
+                    "class": "form-control",
                     "rows": 5
                 }
-            )
+            ),
+            "latitude": forms.NumberInput(
+                attrs={
+                    "class": "form-control",
+                    "readonly": "readonly"
+                }
+            ),
+            "longitude": forms.NumberInput(
+                attrs={
+                    "class": "form-control",
+                    "readonly": "readonly"
+                }
+            ),
         }

@@ -7,11 +7,15 @@ from .models import Notification
 @login_required
 def liste_notifications(request):
 
-    notifications = Notification.objects.filter(
+    if request.user.is_staff:
 
-        utilisateur=request.user
+        notifications = Notification.objects.all().order_by("-date_creation")
 
-    )
+    else:
+
+        notifications = Notification.objects.filter(
+            utilisateur=request.user
+        ).order_by("-date_creation")
 
     return render(
 

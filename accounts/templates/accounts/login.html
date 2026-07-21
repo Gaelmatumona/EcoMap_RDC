@@ -1,28 +1,67 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Connexion</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Connexion</h2>
+{% block content %}
 
-<form method="POST">
-    {% csrf_token %}
+<div class="container py-5">
 
-    {{ form.as_p }}
+    <div class="row justify-content-center">
 
-    <button type="submit">
-        Se connecter
-    </button>
+        <div class="col-md-6">
 
-</form>
+            <div class="card shadow border-0">
 
-<p>
-    <a href="{% url 'register' %}">
-        Créer un compte
-    </a>
-</p>
+                <div class="card-body p-5">
 
-</body>
-</html>
+                    <h2 class="text-center text-success mb-4">
+                        Connexion
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="d-grid mt-4">
+
+                            <button class="btn btn-success btn-lg">
+
+                                Se connecter
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <hr>
+
+                    <p class="text-center">
+
+                        Vous n'avez pas encore de compte ?
+
+                    </p>
+
+                    <div class="d-grid">
+
+                        <a href="{% url 'register' %}"
+
+                           class="btn btn-outline-success">
+
+                            Créer un compte
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -20,11 +20,23 @@ from .forms import SignalementForm
 @login_required
 def liste_signalements(request):
 
-    signalements = Signalement.objects.select_related(
-        "categorie",
-        "utilisateur",
-        "lieu"
-    ).order_by("-date_signalement")
+    if request.user.is_staff:
+
+        signalements = Signalement.objects.select_related(
+            "categorie",
+            "utilisateur",
+            "lieu"
+        ).order_by("-date_signalement")
+
+    else:
+
+        signalements = Signalement.objects.select_related(
+            "categorie",
+            "utilisateur",
+            "lieu"
+        ).filter(
+            utilisateur=request.user
+        ).order_by("-date_signalement")
 
     categorie = request.GET.get("categorie")
     statut = request.GET.get("statut")
@@ -78,6 +90,9 @@ def ajouter_signalement(request):
 
             signalement.longitude = request.session.get("longitude")
 
+            # Le statut est défini automatiquement
+            signalement.statut = Signalement.Statut.EN_ATTENTE
+
             signalement.save()
 
             form.save_m2m()
@@ -105,10 +120,20 @@ def ajouter_signalement(request):
 @login_required
 def detail_signalement(request, pk):
 
-    signalement = get_object_or_404(
-        Signalement,
-        pk=pk
-    )
+    if request.user.is_staff:
+
+        signalement = get_object_or_404(
+            Signalement,
+            pk=pk
+        )
+
+    else:
+
+        signalement = get_object_or_404(
+            Signalement,
+            pk=pk,
+            utilisateur=request.user
+        )
 
     return render(
         request,
@@ -150,9 +175,19 @@ def export_pdf(request):
         "Date"
     ]]
 
-    signalements = Signalement.objects.select_related(
-        "categorie"
-    ).order_by("-date_signalement")
+    if request.user.is_staff:
+
+        signalements = Signalement.objects.select_related(
+            "categorie"
+        ).order_by("-date_signalement")
+
+    else:
+
+        signalements = Signalement.objects.select_related(
+            "categorie"
+        ).filter(
+            utilisateur=request.user
+        ).order_by("-date_signalement")
 
     for s in signalements:
 

@@ -9,8 +9,13 @@ from .forms import AffectationForm, RapportInterventionForm
 
 from notifications.models import Notification
 
+
 @login_required
 def liste_affectations(request):
+
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
 
     affectations = Affectation.objects.select_related(
         "signalement",
@@ -29,6 +34,10 @@ def liste_affectations(request):
 
 @login_required
 def detail_affectation(request, pk):
+
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
 
     affectation = get_object_or_404(
         Affectation.objects.select_related(
@@ -51,6 +60,10 @@ def detail_affectation(request, pk):
 @login_required
 def creer_affectation(request, signalement_id):
 
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("liste_signalements")
+
     signalement = get_object_or_404(
         Signalement,
         pk=signalement_id
@@ -65,15 +78,12 @@ def creer_affectation(request, signalement_id):
             affectation = form.save(commit=False)
             affectation.signalement = signalement
             affectation.save()
+
             Notification.objects.create(
-
-    utilisateur=signalement.utilisateur,
-
-    titre="Signalement affecté",
-
-    message=f"Votre signalement '{signalement.titre}' a été affecté au service {affectation.service.nom}."
-
-)
+                utilisateur=signalement.utilisateur,
+                titre="Signalement affecté",
+                message=f"Votre signalement '{signalement.titre}' a été affecté au service {affectation.service.nom}."
+            )
 
             signalement.statut = Signalement.Statut.EN_COURS
             signalement.save()
@@ -102,6 +112,10 @@ def creer_affectation(request, signalement_id):
 @login_required
 def demarrer_affectation(request, pk):
 
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
+
     affectation = get_object_or_404(
         Affectation,
         pk=pk
@@ -110,15 +124,12 @@ def demarrer_affectation(request, pk):
     affectation.statut = Affectation.Statut.EN_COURS
     affectation.date_debut = timezone.now()
     affectation.save()
+
     Notification.objects.create(
-
-    utilisateur=affectation.signalement.utilisateur,
-
-    titre="Intervention démarrée",
-
-    message=f"L'intervention concernant '{affectation.signalement.titre}' vient de commencer."
-
-)
+        utilisateur=affectation.signalement.utilisateur,
+        titre="Intervention démarrée",
+        message=f"L'intervention concernant '{affectation.signalement.titre}' vient de commencer."
+    )
 
     messages.success(
         request,
@@ -134,6 +145,10 @@ def demarrer_affectation(request, pk):
 @login_required
 def terminer_affectation(request, pk):
 
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
+
     affectation = get_object_or_404(
         Affectation,
         pk=pk
@@ -146,15 +161,12 @@ def terminer_affectation(request, pk):
     signalement = affectation.signalement
     signalement.statut = Signalement.Statut.RESOLU
     signalement.save()
+
     Notification.objects.create(
-
-    utilisateur=signalement.utilisateur,
-
-    titre="Intervention terminée",
-
-    message=f"Votre signalement '{signalement.titre}' a été résolu."
-
-)
+        utilisateur=signalement.utilisateur,
+        titre="Intervention terminée",
+        message=f"Votre signalement '{signalement.titre}' a été résolu."
+    )
 
     messages.success(
         request,
@@ -169,6 +181,10 @@ def terminer_affectation(request, pk):
 
 @login_required
 def creer_rapport(request, pk):
+
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
 
     affectation = get_object_or_404(
         Affectation,
@@ -226,6 +242,10 @@ def creer_rapport(request, pk):
 
 @login_required
 def liste_rapports(request):
+
+    if not request.user.is_staff:
+        messages.error(request, "Accès réservé à l'administrateur.")
+        return redirect("accueil")
 
     rapports = RapportIntervention.objects.select_related(
         "affectation",

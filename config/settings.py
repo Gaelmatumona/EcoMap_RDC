@@ -23,6 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 import os
 SECRET_KEY = SECRET_KEY = os.environ.get("SECRET_KEY")
 
+# SECRET_KEY = "django-insecure-cle-de-test-pour-le-developpement"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -139,3 +141,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "profil"
+
+LOGOUT_REDIRECT_URL = "login"

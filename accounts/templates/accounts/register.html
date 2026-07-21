@@ -1,29 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inscription</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Créer un compte</h2>
+{% block content %}
 
-<form method="POST" enctype="multipart/form-data">
+<div class="container py-5">
 
-    {% csrf_token %}
+    <div class="row justify-content-center">
 
-    {{ form.as_p }}
+        <div class="col-lg-8">
 
-    <button type="submit">
-        S'inscrire
-    </button>
+            <div class="card shadow border-0">
 
-</form>
+                <div class="card-body p-5">
 
-<p>
-    <a href="{% url 'login' %}">
-        Se connecter
-    </a>
-</p>
+                    <h2 class="text-center text-success mb-4">
 
-</body>
-</html>
+                        Création d'un compte citoyen
+
+                    </h2>
+
+                    <form method="POST"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="d-grid mt-4">
+
+                            <button class="btn btn-success btn-lg">
+
+                                Créer mon compte
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <hr>
+
+                    <p class="text-center">
+
+                        Vous possédez déjà un compte ?
+
+                    </p>
+
+                    <div class="d-grid">
+
+                        <a href="{% url 'login' %}"
+
+                           class="btn btn-outline-success">
+
+                            Se connecter
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

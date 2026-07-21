@@ -1,23 +1,240 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profil</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Bienvenue {{ request.user.nom }}</h2>
+{% block content %}
 
-<p>Nom d'utilisateur : {{ request.user.username }}</p>
+<div class="container py-5">
 
-<p>Téléphone : {{ request.user.telephone }}</p>
+    <div class="text-center mb-5">
 
-<p>Email : {{ request.user.email }}</p>
+        <h2 class="fw-bold text-success">
+            Bienvenue {{ request.user.prenom }} 👋
+        </h2>
 
-<p>Rôle : {{ request.user.role }}</p>
+        <p class="text-muted">
+            Suivez l'évolution de vos signalements en temps réel.
+        </p>
 
-<a href="{% url 'logout' %}">
-    Déconnexion
-</a>
+    </div>
 
-</body>
-</html>
+    <!-- Statistiques -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
+
+                <div class="card-body">
+
+                    <h1 class="text-success">
+                        {{ total }}
+                    </h1>
+
+                    <h5>Total</h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
+
+                <div class="card-body">
+
+                    <h1 class="text-warning">
+                        {{ en_attente }}
+                    </h1>
+
+                    <h5>En attente</h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
+
+                <div class="card-body">
+
+                    <h1 class="text-primary">
+                        {{ en_cours }}
+                    </h1>
+
+                    <h5>En cours</h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
+
+                <div class="card-body">
+
+                    <h1 class="text-success">
+                        {{ resolus }}
+                    </h1>
+
+                    <h5>Résolus</h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Actions -->
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>🚮</h1>
+
+                    <h4>Nouveau signalement</h4>
+
+                    <p>
+                        Déclarez un problème environnemental observé.
+                    </p>
+
+                    <a href="{% url 'ajouter_signalement' %}"
+                       class="btn btn-success">
+
+                        Faire un signalement
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>📋</h1>
+
+                    <h4>Mes signalements</h4>
+
+                    <p>
+                        Consultez tous vos signalements.
+                    </p>
+
+                    <a href="{% url 'liste_signalements' %}"
+                       class="btn btn-primary">
+
+                        Consulter
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>🔔</h1>
+
+                    <h4>Mes notifications</h4>
+
+                    <p>
+                        Consultez les mises à jour concernant vos signalements.
+                    </p>
+
+                    <a href="{% url 'liste_notifications' %}"
+                       class="btn btn-warning">
+
+                        Voir les notifications
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-body text-center">
+
+                    <h1>🗺️</h1>
+
+                    <h4>Carte interactive</h4>
+
+                    <p>
+                        Visualisez les zones concernées par les signalements.
+                    </p>
+
+                    <a href="{% url 'carte' %}"
+                       class="btn btn-info text-white">
+
+                        Ouvrir la carte
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h1>🚪</h1>
+
+                    <h4>Déconnexion</h4>
+
+                    <p>
+                        Quitter votre espace citoyen en toute sécurité.
+                    </p>
+
+                    <a href="{% url 'logout' %}"
+                       class="btn btn-danger">
+
+                        Se déconnecter
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
