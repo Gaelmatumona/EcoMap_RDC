@@ -4,29 +4,52 @@
 
 <div class="container">
 
-<h2>{{ titre }}</h2>
+    <h2>{{ titre }}</h2>
 
-<hr>
+    <hr>
 
-<form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
 
-{% csrf_token %}
+        {% csrf_token %}
 
-{{ form.as_p }}
+        {{ form.as_p }}
 
-<button class="btn btn-success">
+        <div class="mb-3">
 
-Enregistrer
+            <label class="form-label">
 
-</button>
+                Photo(s) du problème
 
-<a href="/carte/" class="btn btn-primary">
+            </label>
 
-Choisir sur la carte
+            <input
+                type="file"
+                name="photos"
+                class="form-control"
+                accept="image/*"
+                multiple>
 
-</a>
+            <div class="form-text">
 
-</form>
+                Vous pouvez sélectionner une ou plusieurs photos.
+
+            </div>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            Enregistrer
+
+        </button>
+
+        <a href="{% url 'carte' %}" class="btn btn-primary">
+
+            Choisir sur la carte
+
+        </a>
+
+    </form>
 
 </div>
 

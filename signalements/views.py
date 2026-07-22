@@ -13,7 +13,11 @@ from reportlab.platypus import (
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 
-from .models import Signalement, CategorieSignalement
+from .models import (
+    Signalement,
+    CategorieSignalement,
+    PhotoSignalement,
+)
 from .forms import SignalementForm
 
 
@@ -90,16 +94,23 @@ def ajouter_signalement(request):
 
             signalement.longitude = request.session.get("longitude")
 
-            # Le statut est défini automatiquement
             signalement.statut = Signalement.Statut.EN_ATTENTE
 
             signalement.save()
 
             form.save_m2m()
 
+            # Enregistrer toutes les photos
+            for photo in request.FILES.getlist("photos"):
+
+                PhotoSignalement.objects.create(
+                    signalement=signalement,
+                    photo=photo
+                )
+
             messages.success(
                 request,
-                "Signalement créé avec succès."
+                "Votre signalement a été envoyé avec succès."
             )
 
             return redirect("liste_signalements")
@@ -112,7 +123,8 @@ def ajouter_signalement(request):
         request,
         "signalements/form.html",
         {
-            "form": form
+            "form": form,
+            "titre": "Nouveau signalement",
         }
     )
 

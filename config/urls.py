@@ -24,27 +24,57 @@ from .views import accueil
 
 urlpatterns = [
 
-    path("", accueil, name="accueil"),
+    path(
+        "",
+        accueil,
+        name="accueil"
+    ),
 
-    path("admin/", admin.site.urls),
+    path(
+        "admin/",
+        admin.site.urls
+    ),
 
-    path("accounts/", include("accounts.urls")),
+    path(
+        "accounts/",
+        include("accounts.urls")
+    ),
 
-    path("territoire/", include("territoire.urls")),
+    path(
+        "territoire/",
+        include("territoire.urls")
+    ),
 
-    path("signalements/", include("signalements.urls")),
+    path(
+        "signalements/",
+        include("signalements.urls")
+    ),
 
-    path("interventions/", include("interventions.urls")),
-    path("carte/", include("cartographie.urls")),
-    path("dashboard/", include("dashboard.urls")),
-    path("notifications/", include("notifications.urls")),
+    path(
+        "interventions/",
+        include("interventions.urls")
+    ),
+
+    path(
+        "carte/",
+        include("cartographie.urls")
+    ),
+
+    path(
+        "dashboard/",
+        include("dashboard.urls")
+    ),
+
+    path(
+        "notifications/",
+        include("notifications.urls")
+    ),
 
 ]
 
-if settings.DEBUG:
-
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-    )
+# Affichage des images envoyées par les utilisateurs
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)
 

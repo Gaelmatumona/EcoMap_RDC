@@ -2,64 +2,141 @@
 
 {% block content %}
 
-<h2>{{ signalement.titre }}</h2>
+<div class="container mt-4">
 
-<hr>
+    <div class="card shadow">
 
-<p>
+        <div class="card-header bg-success text-white">
 
-<b>Catégorie :</b>
+            <h3>{{ signalement.titre }}</h3>
 
-{{ signalement.categorie }}
+        </div>
 
-</p>
+        <div class="card-body">
 
-<p>
+            <div class="row">
 
-<b>Description :</b>
+                <div class="col-md-6">
 
-{{ signalement.description }}
+                    <p>
+                        <strong>Catégorie :</strong><br>
+                        {{ signalement.categorie }}
+                    </p>
 
-</p>
+                    <p>
+                        <strong>Description :</strong><br>
+                        {{ signalement.description }}
+                    </p>
 
-<p>
+                    <p>
+                        <strong>Statut :</strong><br>
 
-<b>Statut :</b>
+                        {% if signalement.statut == "EN_ATTENTE" %}
+                            <span class="badge bg-warning text-dark">
+                                {{ signalement.get_statut_display }}
+                            </span>
 
-{{ signalement.get_statut_display }}
+                        {% elif signalement.statut == "EN_COURS" %}
+                            <span class="badge bg-primary">
+                                {{ signalement.get_statut_display }}
+                            </span>
 
-</p>
+                        {% elif signalement.statut == "RESOLU" %}
+                            <span class="badge bg-success">
+                                {{ signalement.get_statut_display }}
+                            </span>
 
-<p>
+                        {% else %}
+                            <span class="badge bg-danger">
+                                {{ signalement.get_statut_display }}
+                            </span>
 
-<b>Lieu :</b>
+                        {% endif %}
 
-{{ signalement.lieu }}
+                    </p>
 
-</p>
+                </div>
 
-<p>
+                <div class="col-md-6">
 
-<b>Latitude :</b>
+                    <p>
+                        <strong>Lieu :</strong><br>
+                        {{ signalement.lieu }}
+                    </p>
 
-{{ signalement.latitude }}
+                    <p>
+                        <strong>Latitude :</strong><br>
+                        {{ signalement.latitude }}
+                    </p>
 
-</p>
+                    <p>
+                        <strong>Longitude :</strong><br>
+                        {{ signalement.longitude }}
+                    </p>
 
-<p>
+                    <p>
+                        <strong>Date :</strong><br>
+                        {{ signalement.date_signalement|date:"d/m/Y H:i" }}
+                    </p>
 
-<b>Longitude :</b>
+                </div>
 
-{{ signalement.longitude }}
+            </div>
 
-</p>
+            <hr>
 
-<a href="{% url 'liste_signalements' %}"
+            <h4 class="mb-3">
+                📷 Photos du signalement
+            </h4>
 
-class="btn btn-secondary">
+            <div class="row">
 
-Retour
+                {% for photo in signalement.photos.all %}
 
-</a>
+                    <div class="col-md-4 mb-4">
+
+                        <div class="card shadow-sm">
+
+                            <img
+                                src="{{ photo.photo.url }}"
+                                class="card-img-top"
+                                style="height:250px; object-fit:cover;">
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="col-12">
+
+                        <div class="alert alert-warning">
+
+                            Aucune photo n'a été ajoutée pour ce signalement.
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+
+            <a href="{% url 'liste_signalements' %}"
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

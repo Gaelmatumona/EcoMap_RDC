@@ -2,9 +2,15 @@
 
 {% block content %}
 
-<h2>Carte Interactive EcoMap RDC</h2>
+<div class="container-fluid">
 
-<div id="map" style="height:700px;"></div>
+<h2 class="mb-3 text-success">
+    🗺️ Carte Interactive EcoMap RDC
+</h2>
+
+<div id="map" style="height:700px;border-radius:10px;"></div>
+
+</div>
 
 <link rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -13,16 +19,21 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <script>
 
-var map = L.map('map').setView([-4.325, 15.322], 12);
+var map = L.map("map").setView([-4.325,15.322],12);
 
 L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 {
     maxZoom:19,
-    attribution:'© OpenStreetMap'
+    attribution:"© OpenStreetMap"
 }
 ).addTo(map);
 
+
+
+/* ===========================
+   AFFICHAGE DES LIEUX
+=========================== */
 
 {% for lieu in lieux %}
 
@@ -32,30 +43,53 @@ L.marker([
 {{ lieu.latitude }},
 {{ lieu.longitude }}
 ])
+
 .addTo(map)
-.bindPopup(
-"<b>{{ lieu.nom }}</b><br>{{ lieu.get_type_lieu_display }}"
-);
+
+.bindPopup(`
+
+<h5>📍 {{ lieu.nom }}</h5>
+
+<b>Type :</b>
+
+{{ lieu.get_type_lieu_display }}
+
+<hr>
+
+<a
+href="/signalements/?lieu={{ lieu.id }}"
+class="btn btn-success btn-sm">
+
+Voir les signalements
+
+</a>
+
+`);
 
 {% endif %}
 
 {% endfor %}
 
 
+
+/* ===========================
+   AFFICHAGE DES SIGNALEMENTS
+=========================== */
+
 {% for signalement in signalements %}
 
 {% if signalement.latitude and signalement.longitude %}
 
-var couleur = "blue";
+var couleur="blue";
 
 {% if signalement.statut == "EN_ATTENTE" %}
-couleur = "orange";
+couleur="orange";
 {% elif signalement.statut == "EN_COURS" %}
-couleur = "blue";
+couleur="blue";
 {% elif signalement.statut == "RESOLU" %}
-couleur = "green";
+couleur="green";
 {% elif signalement.statut == "REJETE" %}
-couleur = "red";
+couleur="red";
 {% endif %}
 
 L.circleMarker(
@@ -71,101 +105,144 @@ fillOpacity:0.8,
 weight:2
 }
 )
+
 .addTo(map)
-.bindPopup(
-"<b>{{ signalement.titre }}</b><br>"
-+
-"Catégorie : {{ signalement.categorie.nom }}<br>"
-+
-"Statut : {{ signalement.get_statut_display }}<br>"
-+
-"Description : {{ signalement.description }}"
-);
+
+.bindPopup(`
+
+<h5>{{ signalement.titre }}</h5>
+
+<b>Catégorie :</b>
+
+{{ signalement.categorie.nom }}
+
+<br>
+
+<b>Statut :</b>
+
+{{ signalement.get_statut_display }}
+
+<br><br>
+
+{{ signalement.description }}
+
+`);
 
 {% endif %}
 
 {% endfor %}
 
 
-var marqueur = null;
 
-map.on("click", function(e){
+/* ===========================
+   CREATION D'UN SIGNALEMENT
+=========================== */
 
-    var latitude = e.latlng.lat;
-    var longitude = e.latlng.lng;
+var marqueur=null;
 
-    if(marqueur){
-        map.removeLayer(marqueur);
-    }
+map.on("click",function(e){
 
-    marqueur = L.marker([latitude, longitude]).addTo(map);
+var latitude=e.latlng.lat;
+var longitude=e.latlng.lng;
 
-    if(confirm("Créer un signalement à cet endroit ?")){
+if(marqueur){
 
-        fetch(
-            "/carte/enregistrer-position/?latitude="
-            + latitude +
-            "&longitude=" +
-            longitude
-        )
-        .then(response => response.json())
-        .then(data => {
+map.removeLayer(marqueur);
 
-            if(data.success){
+}
 
-                window.location.href="/signalements/ajouter/";
+marqueur=L.marker([latitude,longitude]).addTo(map);
 
-            }
+if(confirm("Créer un signalement à cet endroit ?")){
 
-        });
+fetch(
+"/carte/enregistrer-position/?latitude="
++latitude+
+"&longitude="
++longitude
+)
 
-    }
+.then(response=>response.json())
+
+.then(data=>{
+
+if(data.success){
+
+window.location.href="/signalements/ajouter/";
+
+}
 
 });
-var legende = L.control({position: "bottomright"});
 
-legende.onAdd = function () {
+}
 
-    var div = L.DomUtil.create("div", "info legend");
+});
 
-    div.style.background = "white";
-    div.style.padding = "10px";
-    div.style.border = "2px solid #ccc";
-    div.style.borderRadius = "8px";
-    div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
 
-    div.innerHTML =
-        "<h4>Statuts</h4>" +
 
-        '<p><span style="display:inline-block;width:15px;height:15px;background:orange;border-radius:50%;"></span> En attente</p>' +
+/* ===========================
+   LEGENDE
+=========================== */
 
-        '<p><span style="display:inline-block;width:15px;height:15px;background:blue;border-radius:50%;"></span> En cours</p>' +
+var legende=L.control({
+position:"bottomright"
+});
 
-        '<p><span style="display:inline-block;width:15px;height:15px;background:green;border-radius:50%;"></span> Résolu</p>' +
+legende.onAdd=function(){
 
-        '<p><span style="display:inline-block;width:15px;height:15px;background:red;border-radius:50%;"></span> Rejeté</p>';
+var div=L.DomUtil.create("div","info legend");
 
-    return div;
+div.style.background="white";
+div.style.padding="10px";
+div.style.border="2px solid #ccc";
+div.style.borderRadius="8px";
+div.style.boxShadow="0 0 10px rgba(0,0,0,.3)";
+
+div.innerHTML=
+
+"<h5>Légende</h5>"+
+
+'<p><span style="display:inline-block;width:15px;height:15px;background:orange;border-radius:50%;"></span> En attente</p>'+
+
+'<p><span style="display:inline-block;width:15px;height:15px;background:blue;border-radius:50%;"></span> En cours</p>'+
+
+'<p><span style="display:inline-block;width:15px;height:15px;background:green;border-radius:50%;"></span> Résolu</p>'+
+
+'<p><span style="display:inline-block;width:15px;height:15px;background:red;border-radius:50%;"></span> Rejeté</p>';
+
+return div;
+
 };
 
 legende.addTo(map);
-if (navigator.geolocation) {
 
-    navigator.geolocation.getCurrentPosition(function(position){
 
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
 
-        L.marker([latitude, longitude])
-        .addTo(map)
-        .bindPopup("📍 Vous êtes ici")
-        .openPopup();
+/* ===========================
+   GEOLOCALISATION
+=========================== */
 
-        map.setView([latitude, longitude], 14);
+if(navigator.geolocation){
 
-    });
+navigator.geolocation.getCurrentPosition(function(position){
+
+var latitude=position.coords.latitude;
+var longitude=position.coords.longitude;
+
+L.marker([latitude,longitude])
+
+.addTo(map)
+
+.bindPopup("📍 Vous êtes ici")
+
+.openPopup();
+
+map.setView([latitude,longitude],14);
+
+});
 
 }
+
 </script>
 
 {% endblock %}

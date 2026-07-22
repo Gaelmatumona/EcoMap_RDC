@@ -6,7 +6,25 @@ from .models import Lieu
 from .forms import LieuForm
 
 
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+
+        if not request.user.is_staff:
+
+            messages.error(
+                request,
+                "Cette fonctionnalité est réservée aux administrateurs."
+            )
+
+            return redirect("profil")
+
+        return view_func(request, *args, **kwargs)
+
+    return wrapper
+
+
 @login_required
+@admin_required
 def liste_lieux(request):
 
     recherche = request.GET.get("q")
@@ -30,6 +48,7 @@ def liste_lieux(request):
 
 
 @login_required
+@admin_required
 def ajouter_lieu(request):
 
     if request.method == "POST":
@@ -62,6 +81,7 @@ def ajouter_lieu(request):
 
 
 @login_required
+@admin_required
 def modifier_lieu(request, pk):
 
     lieu = get_object_or_404(Lieu, pk=pk)
@@ -96,6 +116,7 @@ def modifier_lieu(request, pk):
 
 
 @login_required
+@admin_required
 def supprimer_lieu(request, pk):
 
     lieu = get_object_or_404(Lieu, pk=pk)
@@ -121,6 +142,7 @@ def supprimer_lieu(request, pk):
 
 
 @login_required
+@admin_required
 def detail_lieu(request, pk):
 
     lieu = get_object_or_404(

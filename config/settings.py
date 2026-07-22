@@ -20,15 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-import os
-SECRET_KEY = SECRET_KEY = os.environ.get("SECRET_KEY")
+# import os
+# SECRET_KEY = SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECRET_KEY = "django-insecure-cle-de-test-pour-le-developpement"
+SECRET_KEY = "django-insecure-cle-de-test-pour-le-developpement"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -141,6 +141,12 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Fichiers envoyés par les utilisateurs (photos)
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_URL = "login"
 
